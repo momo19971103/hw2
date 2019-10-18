@@ -35,20 +35,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public  void buttonClick(View view){
 
-
-        //if (Integer.parseInt(editText.getText().toString())<=0||editText.getText().toString().matches("")==true) {
-        //    Toast toast = Toast.makeText(MainActivity.this, "不要開玩笑!!", Toast.LENGTH_LONG);
-        //   toast.show();
-        //}
-        //else {
+        if(ClickTime==2||(!editText.getText().toString().matches("")&&Integer.parseInt(editText.getText().toString())>0)){
             Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
-
+            toast.show();
             ClickTime++;
             if (ClickTime == 3) {
                 ClickTime = 0;
             }
-
-
             switch (ClickTime) {
                 case 0:
                     editText.setFocusableInTouchMode(true);
@@ -56,30 +49,31 @@ public class MainActivity extends AppCompatActivity {
                     textView2.setText(R.string.BMIText);
                     textView.setText("輸入身高");
                     button.setText(R.string.checkText);
-
-
                     break;
                 case 1:
-
                     textView.setText("輸入體重");
-                    height = Integer.parseInt(editText.getText().toString());
-
-
+                    height = Float.parseFloat(editText.getText().toString());
+                    editText.setText("");
                     break;
                 case 2:
                     textView.setText("完成");
-                    weight = Integer.parseInt(editText.getText().toString());
+                    weight = Float.parseFloat(editText.getText().toString());
+                    editText.setText("");
                     bmivalue = weight / ((height * height) / 10000);
-
                     BigDecimal BD = new BigDecimal(bmivalue);
                     float ValueT2D = BD.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();//取小數末兩位、四捨五入
-                    textView2.setText("BMI  " + ValueT2D);
+                    String S_ValueT2D = String.valueOf(ValueT2D);
+                    String BMITEXT = "BMI: "+S_ValueT2D;
+                    textView2.setText(BMITEXT);
                     if (ValueT2D < 18.5) {
                         toast = Toast.makeText(this, "太輕囉~", Toast.LENGTH_SHORT);
+                        toast.show();
                     } else if (ValueT2D < 24) {
                         toast = Toast.makeText(this, "很健康，繼續保持!!", Toast.LENGTH_SHORT);
+                        toast.show();
                     } else {
                         toast = Toast.makeText(this, "多多運動", Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                     button.setText("再一次");
                     editText.setFocusable(false);
@@ -88,11 +82,13 @@ public class MainActivity extends AppCompatActivity {
             }
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
+        }
+        else {
+            Toast toast = Toast.makeText(MainActivity.this, "不要開玩笑!!", Toast.LENGTH_LONG);
             toast.show();
-            editText.setText("");
+        }
 
-
-        //}
     }
 
 
